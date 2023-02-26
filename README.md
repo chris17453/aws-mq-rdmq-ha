@@ -42,7 +42,9 @@ make peering
 # wait a minute.. 
 make accept-peering
 
-# wait a minute.. 
+# watch this until an ID comes up
+make wait-for-peering
+
 make peering-routes
 
 ```
@@ -75,7 +77,9 @@ make igw-b-rt-attach-bastion-subnet
 ```
 
 ## Create a nat gateway for internet access to the private subnet and link to the vpc
-```
+- NOTE here that IP allocation can fail if you are out of spots. 5 Per region MAX
+``
+
 make nat-gw-a-ip
 make nat-gw-b-ip
 make nat-gw-a
@@ -115,19 +119,6 @@ make bastion-a
 make bastion-b
 ```
 
-## Create the public IP for the bastion server
-- this creates a public ip so that we can access the bastion from the internet
-``` 
-make bastion-a-public-ip
-make bastion-b-public-ip
-```
-
-## attach the Public IP to the bastion server
-- this attaches the public ip to the bastion host
-```
-make attach-bastion-a-ip
-make attach-bastion-b-ip
-```
 
 # Add ssh access to the bastion server
 - this adds the firewall policy for ssh to the bastion host
@@ -143,7 +134,7 @@ make add-ssh-access-to-bastion-b
 make ec2-setup-bastion-keypair
 ```
 
-## Make EC2 MQ Hosts
+## Make EC2 Hosts
 ```bash
 make ec2-a-a
 make ec2-a-b
@@ -151,6 +142,8 @@ make ec2-a-c
 make ec2-b-a
 make ec2-b-b
 make ec2-b-c
+make ec2-a-mqipt
+make ec2-b-mqipt
 ```
 ## wait for about 2-3 minutes for all 6 instances to come up
 

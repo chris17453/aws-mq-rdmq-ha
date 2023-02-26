@@ -7,26 +7,26 @@ hi:
 ec2-create-configs:
 # Region A
 	echo "Node:">$(DATA_DIR)/rdqm-a.ini
-	echo "  Name=$(COMPUTE_NAME_A_A)">>$(DATA_DIR)/rdqm-a.ini
-	echo "  HA_Replication=$(COMPUTE_A_A_IP)">>$(DATA_DIR)/rdqm-a.ini
+	echo "  Name=$(MQ_NAME_A_A)">>$(DATA_DIR)/rdqm-a.ini
+	echo "  HA_Replication=$(MQ_A_A_IP)">>$(DATA_DIR)/rdqm-a.ini
 	echo "Node:">>$(DATA_DIR)/rdqm-a.ini
-	echo "  Name=$(COMPUTE_NAME_A_B)">>$(DATA_DIR)/rdqm-a.ini
-	echo "  HA_Replication=$(COMPUTE_A_B_IP)">>$(DATA_DIR)/rdqm-a.ini
+	echo "  Name=$(MQ_NAME_A_B)">>$(DATA_DIR)/rdqm-a.ini
+	echo "  HA_Replication=$(MQ_A_B_IP)">>$(DATA_DIR)/rdqm-a.ini
 	echo "Node:">>$(DATA_DIR)/rdqm-a.ini
-	echo "  Name=$(COMPUTE_NAME_A_C)">>$(DATA_DIR)/rdqm-a.ini
-	echo "  HA_Replication=$(COMPUTE_A_C_IP)">>$(DATA_DIR)/rdqm-a.ini
+	echo "  Name=$(MQ_NAME_A_C)">>$(DATA_DIR)/rdqm-a.ini
+	echo "  HA_Replication=$(MQ_A_C_IP)">>$(DATA_DIR)/rdqm-a.ini
 	echo "">>$(DATA_DIR)/rdqm-a.ini
 
 # Region B
 	echo "Node:">$(DATA_DIR)/rdqm-b.ini
-	echo "  Name=$(COMPUTE_NAME_B_A)">>$(DATA_DIR)/rdqm-b.ini
-	echo "  HA_Replication=$(COMPUTE_B_A_IP)">>$(DATA_DIR)/rdqm-b.ini
+	echo "  Name=$(MQ_NAME_B_A)">>$(DATA_DIR)/rdqm-b.ini
+	echo "  HA_Replication=$(MQ_B_A_IP)">>$(DATA_DIR)/rdqm-b.ini
 	echo "Node:">>$(DATA_DIR)/rdqm-b.ini
-	echo "  Name=$(COMPUTE_NAME_B_B)">>$(DATA_DIR)/rdqm-b.ini
-	echo "  HA_Replication=$(COMPUTE_B_B_IP)">>$(DATA_DIR)/rdqm-b.ini
+	echo "  Name=$(MQ_NAME_B_B)">>$(DATA_DIR)/rdqm-b.ini
+	echo "  HA_Replication=$(MQ_B_B_IP)">>$(DATA_DIR)/rdqm-b.ini
 	echo "Node:">>$(DATA_DIR)/rdqm-b.ini
-	echo "  Name=$(COMPUTE_NAME_B_C)">>$(DATA_DIR)/rdqm-b.ini
-	echo "  HA_Replication=$(COMPUTE_B_C_IP)">>$(DATA_DIR)/rdqm-b.ini
+	echo "  Name=$(MQ_NAME_B_C)">>$(DATA_DIR)/rdqm-b.ini
+	echo "  HA_Replication=$(MQ_B_C_IP)">>$(DATA_DIR)/rdqm-b.ini
 	echo "">>$(DATA_DIR)/rdqm-b.ini
 
 ec2-bastion-setup:
@@ -52,8 +52,8 @@ ec2-setup-mqm-user:
 	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(TARGET) <scripts/075-mqm-authorized_keys.sh
 
 ec2-setup-mqm-master:
-	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(COMPUTE_A_A_SSH) <scripts/070-mqm-keypair.sh
-	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(COMPUTE_B_A_SSH) <scripts/070-mqm-keypair.sh
+	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_A_A_SSH) <scripts/070-mqm-keypair.sh
+	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_B_A_SSH) <scripts/070-mqm-keypair.sh
 
 ec2-setup-mqm-bastion:
 	ssh -i $(PEM_FILE) $(BASTION_A_SSH) <scripts/010-create-user.sh
@@ -83,8 +83,8 @@ ec2-mqadv:
 
 # ONLY ON 1 NODE PER REGION
 ec2-activate-node:
-	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(COMPUTE_A_A_SSH) <scripts/090-activate-regional-node.sh
-	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(COMPUTE_B_A_SSH) <scripts/090-activate-regional-node.sh
+	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_A_A_SSH) <scripts/090-activate-regional-node.sh
+	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_B_A_SSH) <scripts/090-activate-regional-node.sh
 
 ec2-kmod-drbd:
 	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(TARGET) <scripts/100-kmod-drbd.sh
@@ -96,18 +96,18 @@ ec2-rqdm:
 	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(TARGET) <scripts/120-rqdm.sh
 
 ec2-mq-config:
-	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(COMPUTE_A_A_SSH) sudo tee /var/mqm/rdqm.ini<$(DATA_DIR)/rdqm-a.ini
-	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(COMPUTE_A_B_SSH) sudo tee /var/mqm/rdqm.ini<$(DATA_DIR)/rdqm-a.ini
-	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(COMPUTE_A_C_SSH) sudo tee /var/mqm/rdqm.ini<$(DATA_DIR)/rdqm-a.ini
-	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(COMPUTE_B_A_SSH) sudo tee /var/mqm/rdqm.ini<$(DATA_DIR)/rdqm-b.ini
-	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(COMPUTE_B_B_SSH) sudo tee /var/mqm/rdqm.ini<$(DATA_DIR)/rdqm-b.ini
-	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(COMPUTE_B_C_SSH) sudo tee /var/mqm/rdqm.ini<$(DATA_DIR)/rdqm-b.ini
+	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_A_A_SSH) sudo tee /var/mqm/rdqm.ini<$(DATA_DIR)/rdqm-a.ini
+	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_A_B_SSH) sudo tee /var/mqm/rdqm.ini<$(DATA_DIR)/rdqm-a.ini
+	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_A_C_SSH) sudo tee /var/mqm/rdqm.ini<$(DATA_DIR)/rdqm-a.ini
+	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_B_A_SSH) sudo tee /var/mqm/rdqm.ini<$(DATA_DIR)/rdqm-b.ini
+	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_B_B_SSH) sudo tee /var/mqm/rdqm.ini<$(DATA_DIR)/rdqm-b.ini
+	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_B_C_SSH) sudo tee /var/mqm/rdqm.ini<$(DATA_DIR)/rdqm-b.ini
 
 # ONLY ON 1 NODE PER REGION
 ec2-rdqmadm:
-	-ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(COMPUTE_A_A_SSH) <scripts/130-rdqadm.sh
-	-ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(COMPUTE_B_A_SSH) <scripts/130-rdqadm.sh
+	-ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_A_A_SSH) <scripts/130-rdqadm.sh
+	-ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_B_A_SSH) <scripts/130-rdqadm.sh
 
 ec2-rdqmadm-status:
-	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(COMPUTE_A_A_SSH) <scripts/140-rdqadm-status.sh
-	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(COMPUTE_B_A_SSH) <scripts/140-rdqadm-status.sh
+	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_A_A_SSH) <scripts/140-rdqadm-status.sh
+	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_B_A_SSH) <scripts/140-rdqadm-status.sh

@@ -1,3 +1,5 @@
 .vscode-upload.json
 data
+*.gz
+*.tgz
 
