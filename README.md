@@ -78,8 +78,8 @@ make igw-b-rt-attach-bastion-subnet
 
 ## Create a nat gateway for internet access to the private subnet and link to the vpc
 - NOTE here that IP allocation can fail if you are out of spots. 5 Per region MAX
-``
 
+```
 make nat-gw-a-ip
 make nat-gw-b-ip
 make nat-gw-a
