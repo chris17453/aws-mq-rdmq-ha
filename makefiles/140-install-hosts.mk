@@ -75,6 +75,10 @@ ec2-volumes:
 ec2-hostname:
 	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(TARGET) "sudo hostnamectl set-hostname $(HOSTNAME)"
 
+ec2-mqipt-hostname:
+	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQIPT_A_SSH) "sudo hostnamectl set-hostname $(MQIPT_A_NAME)"
+	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQIPT_B_SSH) "sudo hostnamectl set-hostname $(MQIPT_B_NAME)"
+
 ec2-system-settings:
 	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(TARGET) <scripts/060-system-settings.sh
 
@@ -108,6 +112,17 @@ ec2-rdqmadm:
 	-ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_A_A_SSH) <scripts/130-rdqadm.sh
 	-ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_B_A_SSH) <scripts/130-rdqadm.sh
 
+
+ec2-delete-queue:
+	-ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_A_A_SSH) <scripts/130-delete-queue.sh
+	-ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_B_A_SSH) <scripts/130-delete-queue.sh
+
+
 ec2-rdqmadm-status:
 	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_A_A_SSH) <scripts/140-rdqadm-status.sh
 	ssh -i $(PEM_FILE) $(BASTION_A_SSH) ssh $(MQ_B_A_SSH) <scripts/140-rdqadm-status.sh
+
+
+ec2-etc-hosts:
+	ssh -i $(PEM_FILE) $(BASTION_A_SSH)  <scripts/006-etc-hosts.sh
+	ssh -i $(PEM_FILE) $(BASTION_B_SSH)  <scripts/006-etc-hosts.sh

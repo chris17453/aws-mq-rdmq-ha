@@ -123,9 +123,10 @@ variables:
 	@echo " MQ_B_A_SSH           : $(MQ_B_A_SSH)"
 	@echo " MQ_B_B_SSH           : $(MQ_B_B_SSH)"
 	@echo " MQ_B_C_SSH           : $(MQ_B_C_SSH)"
-
-
-## HOSTNAMES
+	@echo " MQIPT_A_SSH          : $(MQIPT_A_SSH)"
+	@echo " MQIPT_B_SSH          : $(MQIPT_B_SSH)"
+ 
+ ## HOSTNAMES
 	@echo "Hostnames"
 	@echo " MQ_NAME_A_A          :" $(MQ_NAME_A_A)
 	@echo " MQ_NAME_A_B          :" $(MQ_NAME_A_B)

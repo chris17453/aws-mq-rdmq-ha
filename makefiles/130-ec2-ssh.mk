@@ -33,6 +33,7 @@ ec2-setup-bastion-keypair:
 	ssh -i $(PEM_FILE) $(BASTION_USER)@$(BASTION_B_PUBLIC_IP) "chmod 600 ~/.ssh/id_rsa.pub"
 
 
+
 ec2-bastion-accept-fingerprints:
 	# add all insances to bastion a
 	ssh -i $(PEM_FILE) $(BASTION_A_SSH) "ssh-keyscan -H $(MQ_A_A_IP) >> ~/.ssh/known_hosts"
@@ -42,7 +43,8 @@ ec2-bastion-accept-fingerprints:
 	ssh -i $(PEM_FILE) $(BASTION_A_SSH) "ssh-keyscan -H $(MQ_B_B_IP) >> ~/.ssh/known_hosts"
 	ssh -i $(PEM_FILE) $(BASTION_A_SSH) "ssh-keyscan -H $(MQ_B_C_IP) >> ~/.ssh/known_hosts"
 	ssh -i $(PEM_FILE) $(BASTION_A_SSH) "ssh-keyscan -H $(BASTION_B_IP) >> ~/.ssh/known_hosts"
-	ssh -i $(MQM_PEM_FILE) mqm@$(BASTION_A_PUBLIC_IP) "ssh-keyscan -H $(MQ_A_A_IP) >> ~/.ssh/known_hosts"
+	ssh -i $(PEM_FILE) $(BASTION_A_SSH) "ssh-keyscan -H $(MQIPT_A_IP) >> ~/.ssh/known_hosts"
+
 	# add all insances to bastion b
 	ssh -i $(PEM_FILE) $(BASTION_B_SSH) "ssh-keyscan -H $(MQ_A_A_IP) >> ~/.ssh/known_hosts"
 	ssh -i $(PEM_FILE) $(BASTION_B_SSH) "ssh-keyscan -H $(MQ_A_B_IP) >> ~/.ssh/known_hosts"
@@ -51,7 +53,16 @@ ec2-bastion-accept-fingerprints:
 	ssh -i $(PEM_FILE) $(BASTION_B_SSH) "ssh-keyscan -H $(MQ_B_B_IP) >> ~/.ssh/known_hosts"
 	ssh -i $(PEM_FILE) $(BASTION_B_SSH) "ssh-keyscan -H $(MQ_B_C_IP) >> ~/.ssh/known_hosts"
 	ssh -i $(PEM_FILE) $(BASTION_B_SSH) "ssh-keyscan -H $(BASTION_A_IP) >> ~/.ssh/known_hosts"
+	ssh -i $(PEM_FILE) $(BASTION_A_SSH) "ssh-keyscan -H $(MQIPT_B_IP) >> ~/.ssh/known_hosts"
+
+
+ec2-bastion-accept-mqm-fingerprints:
+	ssh -i $(MQM_PEM_FILE) mqm@$(BASTION_A_PUBLIC_IP) "ssh-keyscan -H $(MQ_A_A_IP) >> ~/.ssh/known_hosts"
+	ssh -i $(MQM_PEM_FILE) mqm@$(BASTION_A_PUBLIC_IP) "ssh-keyscan -H $(MQ_A_B_IP) >> ~/.ssh/known_hosts"
+	ssh -i $(MQM_PEM_FILE) mqm@$(BASTION_A_PUBLIC_IP) "ssh-keyscan -H $(MQ_A_C_IP) >> ~/.ssh/known_hosts"
 	ssh -i $(MQM_PEM_FILE) mqm@$(BASTION_B_PUBLIC_IP) "ssh-keyscan -H $(MQ_B_A_IP) >> ~/.ssh/known_hosts"
+	ssh -i $(MQM_PEM_FILE) mqm@$(BASTION_B_PUBLIC_IP) "ssh-keyscan -H $(MQ_B_B_IP) >> ~/.ssh/known_hosts"
+	ssh -i $(MQM_PEM_FILE) mqm@$(BASTION_B_PUBLIC_IP) "ssh-keyscan -H $(MQ_B_C_IP) >> ~/.ssh/known_hosts"
 
 ec2-master-nodes-accept-fingerprints:
 	# add region a to master node
@@ -59,5 +70,7 @@ ec2-master-nodes-accept-fingerprints:
 	ssh -i $(MQM_PEM_FILE) mqm@$(BASTION_A_PUBLIC_IP) 'ssh -i ~/.ssh/id_rsa mqm@$(MQ_A_A_IP) "ssh-keyscan -H $(MQ_A_C_IP) >> ~/.ssh/known_hosts"'
 	
 	# add region b to master node
-	ssh -i $(MQM_PEM_FILE) mqm@$(BASTION_A_PUBLIC_IP) 'ssh -i ~/.ssh/id_rsa mqm@$(MQ_B_A_IP) "ssh-keyscan -H $(MQ_B_B_IP) >> ~/.ssh/known_hosts"'
-	ssh -i $(MQM_PEM_FILE) mqm@$(BASTION_A_PUBLIC_IP) 'ssh -i ~/.ssh/id_rsa mqm@$(MQ_B_A_IP) "ssh-keyscan -H $(MQ_B_C_IP) >> ~/.ssh/known_hosts"'
+	ssh -i $(MQM_PEM_FILE) mqm@$(BASTION_B_PUBLIC_IP) 'ssh -i ~/.ssh/id_rsa mqm@$(MQ_B_A_IP) "ssh-keyscan -H $(MQ_B_B_IP) >> ~/.ssh/known_hosts"'
+	ssh -i $(MQM_PEM_FILE) mqm@$(BASTION_B_PUBLIC_IP) 'ssh -i ~/.ssh/id_rsa mqm@$(MQ_B_A_IP) "ssh-keyscan -H $(MQ_B_C_IP) >> ~/.ssh/known_hosts"'
+
+

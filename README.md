@@ -4,6 +4,7 @@
 ## Init the project
 - this makes a user data directory per PRJ_ID
 - PRJ_ID is the project name + the revision number 
+- generates the etc/hosts additions for the bastion servers
 ```
 make init
 ```
@@ -125,7 +126,6 @@ make bastion-b
 ```
 make add-ssh-access-to-bastion-a
 make add-ssh-access-to-bastion-b
-
 ```
 
 # add bastion keypair
@@ -145,14 +145,14 @@ make ec2-b-c
 make ec2-a-mqipt
 make ec2-b-mqipt
 ```
-## wait for about 2-3 minutes for all 6 instances to come up
+## Wait for about 2-3 minutes for all 6 instances to come up
 
 ## UPDATE EC2 HOSTS
 ```bash
 # OS SETUP
 make ec2-bastion-setup
-make ec2-bastion-accept-fingerprints
 make mqm-keypair
+make ec2-bastion-accept-fingerprints
 make ec2-create-configs
 make ec2-copy-files-bastion
 make all-ec2-copy-files
@@ -161,15 +161,21 @@ make all-ec2-dnf
 # USER SETUP
 make all-ec2-add-user
 make all-ec2-setup-mqm-user
-make ec2-setup-mqm-master
 make ec2-setup-mqm-bastion
+make ec2-bastion-accept-mqm-fingerprints
+make ec2-setup-mqm-master
+make ec2-master-nodes-accept-fingerprints
+
 
 
 # HOST SETUP
 make all-ec2-update-sudoers
 make all-ec2-volumes
 make all-ec2-hostname
+make ec2-mqipt-hostname
 make all-ec2-system-settings
+make ec2-etc-hosts
+
 # WAIT A BIT, the last command issued a reboot
 
 # SOFTWARE SETUP

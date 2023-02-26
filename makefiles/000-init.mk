@@ -1,6 +1,25 @@
-init:
-	mkdir -p $(DATA_DIR)
-	mkdir -p $(DATA_DIR)/ssh
+
+profile-dir:
+	@mkdir -p $(DATA_DIR)
+	@mkdir -p $(DATA_DIR)/ssh
+
+etc-hosts:
+	@echo "$(MQ_A_A_IP)       $(MQ_NAME_A_A)">$(DATA_DIR)/hosts
+	@echo "$(MQ_A_B_IP)       $(MQ_NAME_A_B)">>$(DATA_DIR)/hosts
+	@echo "$(MQ_A_C_IP)       $(MQ_NAME_A_C)">>$(DATA_DIR)/hosts
+	@echo "$(MQ_B_A_IP)       $(MQ_NAME_B_A)">>$(DATA_DIR)/hosts
+	@echo "$(MQ_B_B_IP)       $(MQ_NAME_B_B)">>$(DATA_DIR)/hosts
+	@echo "$(MQ_B_C_IP)       $(MQ_NAME_B_C)">>$(DATA_DIR)/hosts
+	@echo "$(BASTION_A_IP)    $(BASTION_A_NAME)">>$(DATA_DIR)/hosts
+	@echo "$(BASTION_B_IP)    $(BASTION_B_NAME)">>$(DATA_DIR)/hosts
+	@echo "$(MQIPT_A_IP)      $(MQIPT_A_NAME)">>$(DATA_DIR)/hosts
+	@echo "$(MQIPT_B_IP)      $(MQIPT_B_NAME)">>$(DATA_DIR)/hosts
+
+init: profile-dir etc-hosts
+
+download-kmod:
+	wget https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/mqadv_dev931_linux_x86-64.tar.gz -O $(DATA_DIR)/mqadv_dev931_linux_x86-64.tar.gz
+
 
 
 ### This function will execute any function on all hosts if you prefix it with all-
@@ -32,4 +51,5 @@ all-%:
 arns:
 	aws resourcegroupstaggingapi get-resources --region $(REGION_A) --tag-filters Key=Project,Values=$(PROJECT_NAME) Key=Rev,Values=$(PROJECT_REV) --query 'ResourceTagMappingList[].ResourceARN' --output json
 	aws resourcegroupstaggingapi get-resources --region $(REGION_B) --tag-filters Key=Project,Values=$(PROJECT_NAME) Key=Rev,Values=$(PROJECT_REV) --query 'ResourceTagMappingList[].ResourceARN' --output json
+
 
