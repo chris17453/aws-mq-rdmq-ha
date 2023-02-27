@@ -36,6 +36,12 @@ ec2-bastion-setup:
 ec2-copy-files-bastion:
 	rsync -av -e 'ssh -i $(PEM_FILE) ' --exclude=.git ./$(DATA_DIR)/ $(BASTION_A_SSH):~/work/
 	rsync -av -e 'ssh -i $(PEM_FILE) ' --exclude=.git ./$(DATA_DIR)/ $(BASTION_B_SSH):~/work/
+	scp -i $(PEM_FILE)  ./software/$(MQIPT_IMAGE) $(BASTION_A_SSH):~/work/
+	scp -i $(PEM_FILE)  ./software/$(MQADV_IMAGE) $(BASTION_A_SSH):~/work/
+	scp -i $(PEM_FILE)  ./software/$(MQIPT_IMAGE) $(BASTION_B_SSH):~/work/
+	scp -i $(PEM_FILE)  ./software/$(MQADV_IMAGE) $(BASTION_B_SSH):~/work/
+
+	
 #	ssh -i $(PEM_FILE) $(BASTION_A_SSH)  <scripts/085-downloads.sh
 
 ec2-copy-files:

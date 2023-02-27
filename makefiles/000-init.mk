@@ -20,6 +20,9 @@ init: profile-dir etc-hosts
 download-kmod:
 	wget https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/mqadv_dev931_linux_x86-64.tar.gz -O $(DATA_DIR)/mqadv_dev931_linux_x86-64.tar.gz
 
+download-mqipt:
+	wget https://ak-delivery04-mul.dhe.ibm.com/sdfdl/v2/sar/CM/WS/0b487/0/Xa.2/Xb.jusyLTSp44S03WBy8fq9680CGyxJSIqgDLPjgK-iHtoJNfIpWmV317YW5B4/Xc.CM/WS/0b487/0/9.2.0.8-IBM-MQIPT-LinuxX64.tar.gz/Xd./Xf.LPR.D1VK/Xg.12184622/Xi.habanero/XY.habanero/XZ.xfD6DSMB2_mikiVbMRqLbQWhaKYN1wCr/9.2.0.8-IBM-MQIPT-LinuxX64.tar.gz -O $(DATA_DIR)/
+
 
 
 ### This function will execute any function on all hosts if you prefix it with all-

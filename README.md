@@ -1,6 +1,9 @@
 # Build Files for the AWS MQ-RDQM-HA Project
 - built using make and bash scripts. No terraform, ansible or python dependencies
 
+
+## 
+![Block View](./assets/mq-rqdm-hadr.png)
 ## Init the project
 - this makes a user data directory per PRJ_ID
 - PRJ_ID is the project name + the revision number 
